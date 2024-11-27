@@ -2,3 +2,5 @@ fastapi[standard]
 peewee
 pendulum
 python-dotenv
+python-logging-loki
+redis[hiredis]

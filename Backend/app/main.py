@@ -5,6 +5,12 @@ from fastapi import FastAPI
 
 app = FastAPI()
 
+@app.get("/healthcheck")
+def healthcheck():
+    """
+    Health check endpoint
+    """
+    return {"status": "healthy"}
 
 def main():
     """
