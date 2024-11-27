@@ -5,7 +5,7 @@ import peewee as pw
 from .base import Base
 from .user import User
 
-class UserRole(Base):
+class UserLoginData(Base):
     """
     Object representing all the data necessary for user registration and authentication.
     """

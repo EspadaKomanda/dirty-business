@@ -3,7 +3,13 @@ Base model for peewee database
 """
 import pendulum as pnd
 import peewee as pw
-from config import POSTGRES_HOSTNAME, POSTGRES_PORT, POSTGRES_DB, POSTGRES_USER, POSTGRES_PASSWORD
+from backend.app.config import (
+    POSTGRES_HOSTNAME,
+    POSTGRES_PORT,
+    POSTGRES_DB,
+    POSTGRES_USER,
+    POSTGRES_PASSWORD
+)
 
 db = pw.PostgresqlDatabase(
     POSTGRES_DB,

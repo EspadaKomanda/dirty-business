@@ -10,7 +10,7 @@ environment instead.
 import logging
 from os import getenv
 from dotenv import load_dotenv
-from exceptions.generic.configuration_exception import ConfigurationException
+from backend.app.exceptions.generic.configuration_exception import ConfigurationException
 
 load_dotenv(override=False)
 
