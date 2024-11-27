@@ -13,7 +13,7 @@ db = pw.PostgresqlDatabase(
     port=POSTGRES_PORT
 )
 
-class BaseModel(pw.Model):
+class Base(pw.Model):
     """
     Default database model
     """
