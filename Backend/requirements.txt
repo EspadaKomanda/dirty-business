@@ -1,6 +1,7 @@
 fastapi[standard]
 peewee
 pendulum
+psycopg2
 python-dotenv
 python-logging-loki
 redis[hiredis]
