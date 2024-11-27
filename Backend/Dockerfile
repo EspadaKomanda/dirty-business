@@ -8,4 +8,4 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
 
-CMD ["python", "/app/__main__.py"]
+CMD ["fastapi", "run"]
