@@ -12,6 +12,6 @@ def create_database():
     """
     logger.debug("Connecting to databse...")
     db.connect()
-    
+
     logger.debug("Initializing tables...")
     db.create_tables([], safe=True)

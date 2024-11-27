@@ -20,11 +20,11 @@ class BaseModel(pw.Model):
     created_at = pw.DateTimeField(default=pnd.now())
     updated_at = pw.DateTimeField(default=pnd.now())
 
-    class Meta:
+    class Meta:  # pylint: disable=too-few-public-methods
         """
         Metadata for the database model
         """
-        database = db  # This model uses the PostgreSQL database
+        database = db
 
     def save(self, *args, **kwargs):
         # Update the updated_at field before saving
