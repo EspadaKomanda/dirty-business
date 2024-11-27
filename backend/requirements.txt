@@ -1,7 +1,7 @@
 fastapi[standard]
 peewee
 pendulum
-psycopg2
+psycopg2-binary
 pydantic
 python-dotenv
 python-logging-loki

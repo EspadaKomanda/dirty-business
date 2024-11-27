@@ -7,6 +7,7 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     volumes:
       - postgres_data:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
       - my_network
 
@@ -39,7 +40,7 @@ services:
 
   fastapi:
     build:
-      context: ./Backend
+      context: ./backend
       dockerfile: Dockerfile
     environment:
       POSTGRES_HOSTNAME: ${POSTGRES_HOSTNAME}
