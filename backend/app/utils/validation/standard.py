@@ -2,9 +2,8 @@
 Standard validation decorators to be used with DTOs, models and database entities.
 """
 import re
-from backend.app.exceptions.generic import ValidationException
+from backend.app.exceptions.generic.validation_exception import ValidationException
 
-# FIXME: datatype on regex
 def validate_regex(field: str, regex: str, required: bool = False, message: str = None):
     """
     Validates field using the given regex. Ignores null values.
