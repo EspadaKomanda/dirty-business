@@ -16,7 +16,7 @@ class UserProfile(Base):
     patronymic = pw.CharField(null=True, max_length=100)
     avatar_url = pw.CharField(null=True, max_length=100)
 
-    @validate_name("username", required=True)
+    @validate_name("name", required=True)
     @validate_name("surname", required=True)
     @validate_name("patronymic")
     def clean(self):
