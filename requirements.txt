@@ -1,0 +1,4 @@
+fastapi
+peewee
+pendulum
+python-dotenv
