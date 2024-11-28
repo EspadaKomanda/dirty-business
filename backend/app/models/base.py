@@ -32,7 +32,13 @@ class Base(pw.Model):
         """
         database = db
 
+    def clean(self):
+        """validation"""
+        return self
+
     def save(self, *args, **kwargs):
         # Update the updated_at field before saving
+        self.clean()
         self.updated_at = pnd.now()
-        return super().save(*args, **kwargs)
+        super().save(*args, **kwargs)
+        return self

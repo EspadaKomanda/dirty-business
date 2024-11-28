@@ -22,13 +22,13 @@ tables = [
         User
     ]
 
+logger.debug("Connecting to databse...")
+db.connect()
+
 def create_database():
     """
-    Automatically connects to the database and initializes all tables.
+    Automatically initializes all tables.
     """
-    logger.debug("Connecting to databse...")
-    db.connect()
-
     logger.debug("Initializing tables...")
     db.create_tables(
         tables,

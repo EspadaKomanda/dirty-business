@@ -21,3 +21,4 @@ class UserProfile(Base):
     @validate_name("patronymic")
     def clean(self):
         """validation"""
+        return self
