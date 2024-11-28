@@ -48,6 +48,7 @@ jobs:
         POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
         REDIS_HOSTNAME: ${{ secrets.REDIS_HOSTNAME }}
         REDIS_PORT: ${{ secrets.REDIS_PORT }}
+        REDIS_PASSWORD: ${{ secrets.REDIS_PASSWORD }}
         JWT_KEY: ${{ secrets.JWT_KEY }}
         JWT_ACCESS_EXPIRE_MINUTES: ${{ secrets.JWT_ACCESS_EXPIRE_MINUTES }}
         JWT_REFRESH_EXPIRE_MINUTES: ${{ secrets.JWT_REFRESH_EXPIRE_MINUTES }}
