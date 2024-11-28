@@ -2,7 +2,7 @@
 Initialization of database
 """
 import logging
-from backend.app.config import POSTGRES_DB, ENVIRONMENT_TYPE
+from app.config import POSTGRES_DB, ENVIRONMENT_TYPE
 from .base import db
 from .role import Role
 from .user_login_data import UserLoginData
