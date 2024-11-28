@@ -2,7 +2,7 @@
 Initialization of database
 """
 import logging
-from app.config import POSTGRES_DB, ENVIRONMENT_TYPE
+from backend.app.config import POSTGRES_DB, ENVIRONMENT_TYPE
 from .base import db
 from .role import Role
 from .user_login_data import UserLoginData
@@ -44,7 +44,10 @@ def wipe_database(database_name: str):
     logger.debug("Wiping database")
 
     if POSTGRES_DB != database_name:
-        raise RuntimeError("Attempting to wipe a different database.")
+        raise RuntimeError(
+            f"Attempting to wipe a different database. "
+            f"Currently running with {POSTGRES_DB}"
+        )
     if ENVIRONMENT_TYPE != "development":
         raise RuntimeError("Attempting to wipe database in non-development environment.")
 

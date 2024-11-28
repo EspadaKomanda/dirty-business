@@ -2,7 +2,7 @@
 Standard validation decorators to be used with DTOs, models and database entities.
 """
 import re
-from app.exceptions.generic.validation_exception import ValidationException
+from backend.app.exceptions.generic.validation_exception import ValidationException
 
 def validate_regex(field: str, regex: str, required: bool = False, message: str = None):
     """
