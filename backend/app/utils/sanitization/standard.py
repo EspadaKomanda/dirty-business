@@ -9,10 +9,10 @@ def sanitize_all(exclude: list = None):
         def wrapper(self, *args, **kwargs):
             for field_name in self.__dict__:
 
-                if exclude is not None and field_name not in exclude:  # Ignore excluded
+                if exclude is None or field_name not in exclude:  # Ignore excluded
                     value = getattr(self, field_name)
 
-                    if value is None:
+                    if value is None or not isinstance(value, str):
                         continue
 
                     # Strip spaces
