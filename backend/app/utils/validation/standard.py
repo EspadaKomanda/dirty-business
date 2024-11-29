@@ -68,12 +68,11 @@ def validate_ndigits(field_name, digits: int, required: bool = False):
 
     return validate_regex(field_name, code_regex, required, "not a valid code.")
 
-# TODO: test validate_url
 def validate_url(field_name, domain: str = None, path: str = None, required: bool = False):
     """
     Validates that a string is a valid URL.
     """
-    url_regex = r"""^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$"""  # pylint: disable=line-too-long
+    url_regex = r"""^(?!.*\.\.)(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w.-]+)+[\w\-._~:/?#[\]@!\$&'$$\*\+,;=.]+$"""  # pylint: disable=line-too-long
 
     if domain is not None and path is not None:
         url_regex = f'^{domain}\/{path}'
