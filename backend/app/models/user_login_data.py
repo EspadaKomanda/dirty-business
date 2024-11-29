@@ -2,6 +2,12 @@
 Object representing all the data necessary for user registration and authentication.
 """
 import peewee as pw
+from backend.app.utils.validation.username import validate_username
+from backend.app.utils.validation.standard import (
+    validate_email,
+    validate_guid,
+    validate_ndigits
+    )
 from .base import Base
 from .user import User
 
@@ -19,3 +25,12 @@ class UserLoginData(Base):
     confirmation_gen_time = pw.TimestampField(null=True)
     recovery_token = pw.CharField(null=True, unique=True, max_length=36)
     recovery_gen_time = pw.TimestampField(null=True)
+
+    @validate_username("username", required=True)
+    @validate_email("email", required=True)
+    @validate_guid("auth_token_salt")
+    @validate_guid("recovery_token")
+    @validate_ndigits("confirmation_code", 6)
+    def clean(self):
+        """validation"""
+        return self

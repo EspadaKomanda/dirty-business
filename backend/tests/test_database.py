@@ -12,6 +12,7 @@ from backend.app.models.user_profile import UserProfile
 from backend.app.models.user_role import UserRole
 from backend.app.models.user_termination import UserTermination
 from backend.app.models.user import User
+from backend.app.exceptions.generic.validation_exception import ValidationException
 
 config.ENVIRONMENT_TYPE = "development"
 config.POSTGRES_DB = "automatic_unittest_database"
@@ -87,12 +88,48 @@ class TestDatabase(unittest.TestCase):
         user.delete_instance(recursive=True)
         role.delete_instance(recursive=True)
 
-    # TODO: implement validation test
+    # XXX:TODO: implement validation test
     def test_validation(self):
         """Validation attributes test"""
         logger.debug("Creation of the database...")
         models.create_database()
 
         logger.debug("Creation of tables...")
-      
-        raise NotImplementedError()
+
+        user = User.create(
+            registration_date=pnd.now()
+        ).save()
+
+        # Test @validate_name
+        try:
+            UserProfile.create(
+                user=user,
+                name="name",
+                surname="surname",
+                patronymic="pat"*100,
+                avatar_url="avatar_url"
+            ).save()
+            assert False
+        except ValidationException:
+            pass
+
+        # Test @validate_email
+        try:
+            UserLoginData.create(
+                user=user,
+                username="username",
+                email="email",
+                password_hash="password_hash",
+                auth_token_salt="auth_token_salt",
+                is_email_confirmed=True,
+                confirmation_code="111111",
+                confirmation_gen_time=pnd.now(),
+                recovery_token="recovery_token",
+                recovery_gen_time=pnd.now()
+            ).save()
+            assert False
+        except ValidationException:
+            pass
+
+        logger.debug("Deleting tables recursively...")
+        user.delete_instance(recursive=True)
