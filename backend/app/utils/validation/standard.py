@@ -75,7 +75,7 @@ def validate_url(field_name, domain: str = None, path: str = None, required: boo
     url_regex = r"""^(?!.*\.\.)(?:http(s)?:\/\/)?[\wа-яА-Я.-]+(?:\.[\wа-яА-Я.-]+)+[\wа-яА-я\-._~:/?#[\]@!\$&'$$\*\+,;=.]+$"""  # pylint: disable=line-too-long
 
     if domain is not None and path is not None:
-        url_regex = f'^{domain}\/{path}'
+        url_regex = rf'^{domain}\/{path}'
 
     return validate_regex(field_name, url_regex, required, "is not a valid URL.")
 

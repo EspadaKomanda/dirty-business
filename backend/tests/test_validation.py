@@ -27,7 +27,7 @@ class TestValidation(unittest.TestCase):
             self.clean()
 
     @classmethod
-    def test_standard_handlers(cls):
+    def test_url_regex_handler(cls):
         """
         Testing standard validation decorators
         """
