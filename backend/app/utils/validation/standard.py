@@ -14,6 +14,8 @@ def validate_regex(field: str, regex: str, required: bool = False, message: str 
     def decorator(func):
         def wrapper(self, *args, **kwargs):
             value = getattr(self, field)
+
+            # Ignore null unless required
             if value is None and not required:
                 return func(self, *args, **kwargs)
             if value is None and required:
@@ -21,10 +23,12 @@ def validate_regex(field: str, regex: str, required: bool = False, message: str 
                     f"{field.replace('_', ' ').capitalize()} cannot be null."
                 )
 
+            # Validate
             if not re.match(regex, value):
                 raise ValidationException(
                     f"{field.replace('_', ' ').capitalize()} {message}"
                 )
+
             return func(self, *args, **kwargs)
         return wrapper
     return decorator
@@ -36,13 +40,48 @@ def validate_required(field_name):
     def decorator(func):
         def wrapper(self, *args, **kwargs):
             value = getattr(self, field_name)
+
+            # Validate
             if not value:
                 raise ValidationException(
                     f"{field_name.replace('_', ' ').capitalize()} cannot be null."
                 )
+
             return func(self, *args, **kwargs)
         return wrapper
     return decorator
+
+def validate_length(
+    field_name,
+    min_length: int = None,
+    max_length: int = None,
+    precise_length: int = None,
+    required: bool = False):
+    """
+    Validates that a string is a valid length.
+    """
+    if precise_length is not None:
+        length_regex = rf'^.{{{precise_length}}}$'
+    elif min_length is not None and max_length is not None:
+        length_regex = rf'^.{{{min_length},{max_length}}}$'
+    elif min_length is not None:
+        length_regex = rf'^.{{{min_length},}}$'
+    elif max_length is not None:
+        length_regex = rf'^.{{,{max_length}}}$'
+
+    else:
+        raise ValueError(
+            "At least one of min_length, max_length "
+            "or precise_length must be specified."
+        )
+
+    return validate_regex(field_name,
+        length_regex,
+        required,
+        f"length is not valid. "
+        f"Minimal length: {min_length}, "
+        f"maximal length: {max_length}, "
+        f"precise length: {precise_length}.")
 
 def validate_email(field_name, required: bool = False):
     """
@@ -86,6 +125,8 @@ def validate_date_before(field_name, before_date: pnd.datetime, required: bool =
     def decorator(func):
         def wrapper(self, *args, **kwargs):
             value = getattr(self, field_name)
+
+            # Ignore null unless required
             if value is None and not required:
                 return func(self, *args, **kwargs)
             if value is None and required:
@@ -93,10 +134,12 @@ def validate_date_before(field_name, before_date: pnd.datetime, required: bool =
                     f"{field_name.replace('_', ' ').capitalize()} cannot be null."
                 )
 
+            # Validate
             if value > before_date:
                 raise ValidationException(
                     f"{field_name.replace('_', ' ').capitalize()} must be before {before_date}."
                 )
+
             return func(self, *args, **kwargs)
         return wrapper
     return decorator
@@ -108,6 +151,8 @@ def validate_date_after(field_name, after_date: pnd.datetime, required: bool = F
     def decorator(func):
         def wrapper(self, *args, **kwargs):
             value = getattr(self, field_name)
+
+            # Ignore null unless required
             if value is None and not required:
                 return func(self, *args, **kwargs)
             if value is None and required:
@@ -115,10 +160,12 @@ def validate_date_after(field_name, after_date: pnd.datetime, required: bool = F
                     f"{field_name.replace('_', ' ').capitalize()} cannot be null."
                 )
 
+            # Validate
             if value < after_date:
                 raise ValidationException(
                     f"{field_name.replace('_', ' ').capitalize()} must be after {after_date}."
                 )
+
             return func(self, *args, **kwargs)
         return wrapper
     return decorator
@@ -135,6 +182,8 @@ def validate_date_between(
     def decorator(func):
         def wrapper(self, *args, **kwargs):
             value = getattr(self, field_name)
+
+            # Ignore null unless required
             if value is None and not required:
                 return func(self, *args, **kwargs)
             if value is None and required:
@@ -142,6 +191,7 @@ def validate_date_between(
                     f"{field_name.replace('_', ' ').capitalize()} cannot be null."
                 )
 
+            # Validate
             if value < start_date or value > end_date:
                 raise ValidationException(
                     f"{field_name.replace('_', ' ').capitalize()} "
