@@ -4,8 +4,10 @@ This module serves as the entry point for the backend application.
 import logging
 from fastapi import FastAPI
 from backend.app import config, controllers
+from backend.app.utils.logging.filters.fastapi_healthcheck import FastAPIHealthCheckFilter
 
 app = FastAPI()
+app.summary = "Backend API for Nickelhack"
 
 def main():
     """
@@ -19,6 +21,7 @@ def main():
             logging.StreamHandler()  # Log to console
         ]
     )
+    logging.getLogger("uvicorn.access").addFilter(FastAPIHealthCheckFilter())
 
     controllers.add_controllers(app)
 

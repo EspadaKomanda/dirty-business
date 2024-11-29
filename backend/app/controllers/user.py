@@ -1,4 +1,6 @@
-"""Controller for operations with users."""
+"""
+Controller for operations with users.
+"""
 import json
 from fastapi import Response, status
 from fastapi_controllers import Controller, get
