@@ -20,7 +20,7 @@ class UserLoginData(Base):
     username = pw.CharField(unique=True, max_length=18)
     email = pw.CharField(unique=True, max_length=50)
     password_hash = pw.CharField(max_length=60)
-    auth_token_salt = pw.CharField(max_length=36)
+    auth_token_salt = pw.CharField(null=True, max_length=36)
     is_email_confirmed = pw.BooleanField(default=False)
     confirmation_code = pw.CharField(null=True, max_length=6)
     confirmation_gen_time = pw.TimestampField(null=True)

@@ -1,4 +1,5 @@
 fastapi[standard]
+fastapi-controllers
 peewee
 pendulum
 psycopg2-binary
@@ -6,3 +7,4 @@ pydantic
 python-dotenv
 python-logging-loki
 redis[hiredis]
+uvicorn

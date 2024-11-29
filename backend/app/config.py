@@ -7,7 +7,6 @@ everywhere else.
 Do not modify this file, configure variables in your
 environment instead.
 """
-import logging
 from os import getenv
 from dotenv import load_dotenv
 from .exceptions.generic.configuration_exception import ConfigurationException
@@ -36,7 +35,9 @@ REDIS_HOSTNAME=getenv("REDIS_HOSTNAME")
 REDIS_PORT=getenv("REDIS_PORT")
 REDIS_PASSWORD=getenv("REDIS_PASSWORD")
 
-if REDIS_PASSWORD is None:
+if (REDIS_HOSTNAME is None or
+    REDIS_PORT is None or
+    REDIS_PASSWORD is None):
     raise ConfigurationException("Redis password have not been configured.")
 
 # Jwt
@@ -53,12 +54,3 @@ if (JWT_KEY is None or
     JWT_AUDIENCE is None
     ):
     raise ConfigurationException("Not all JWT parameters have been configured.")
-
-# Logging setup
-logging.basicConfig(
-    level=logging.DEBUG if ENVIRONMENT_TYPE == "development" else logging.INFO,
-    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
-    handlers=[
-        logging.StreamHandler()  # Log to console
-    ]
-)
