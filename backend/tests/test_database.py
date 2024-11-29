@@ -3,6 +3,7 @@ Testing database operations, including database initialization, entity creation
 and entity validation.
 """
 import unittest
+import uuid
 import logging
 import pendulum as pnd
 from backend.app import config, models
@@ -55,13 +56,13 @@ class TestDatabase(unittest.TestCase):
         UserLoginData.create(
             user=user,
             username="username",
-            email="email",
+            email="email@email.com",
             password_hash="password_hash",
-            auth_token_salt="auth_token_salt",
+            auth_token_salt=str(uuid.uuid4()),
             is_email_confirmed=True,
             confirmation_code="111111",
             confirmation_gen_time=pnd.now(),
-            recovery_token="recovery_token",
+            recovery_token=str(uuid.uuid4()),
             recovery_gen_time=pnd.now()
         ).save()
 
@@ -88,8 +89,7 @@ class TestDatabase(unittest.TestCase):
         user.delete_instance(recursive=True)
         role.delete_instance(recursive=True)
 
-    # XXX:TODO: implement validation test
-    def test_validation(self):
+    def test_database_validation(self):
         """Validation attributes test"""
         logger.debug("Creation of the database...")
         models.create_database()

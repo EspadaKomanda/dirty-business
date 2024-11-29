@@ -50,7 +50,7 @@ def validate_email(field_name, required: bool = False):
     """
     email_regex = r'^[^@]+@[^@]+\.[a-zA-Zа-яА-Я]{2,}$'
 
-    return validate_regex(field_name, email_regex, required, "not a valid email address.")
+    return validate_regex(field_name, email_regex, required, "is not a valid email address.")
 
 def validate_guid(field_name, required: bool = False):
     """
@@ -58,7 +58,7 @@ def validate_guid(field_name, required: bool = False):
     """
     guid_regex = r'^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$'
 
-    return validate_regex(field_name, guid_regex, required, "not a valid GUID.")
+    return validate_regex(field_name, guid_regex, required, "is not a valid GUID.")
 
 def validate_ndigits(field_name, digits: int, required: bool = False):
     """
@@ -66,18 +66,18 @@ def validate_ndigits(field_name, digits: int, required: bool = False):
     """
     code_regex = f'^[0-9]{{{digits}}}$'
 
-    return validate_regex(field_name, code_regex, required, "not a valid code.")
+    return validate_regex(field_name, code_regex, required, "is not a valid code.")
 
 def validate_url(field_name, domain: str = None, path: str = None, required: bool = False):
     """
     Validates that a string is a valid URL.
     """
-    url_regex = r"""^(?!.*\.\.)(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w.-]+)+[\w\-._~:/?#[\]@!\$&'$$\*\+,;=.]+$"""  # pylint: disable=line-too-long
+    url_regex = r"""^(?!.*\.\.)(?:http(s)?:\/\/)?[\wа-яА-Я.-]+(?:\.[\wа-яА-Я.-]+)+[\wа-яА-я\-._~:/?#[\]@!\$&'$$\*\+,;=.]+$"""  # pylint: disable=line-too-long
 
     if domain is not None and path is not None:
         url_regex = f'^{domain}\/{path}'
 
-    return validate_regex(field_name, url_regex, required, "not a valid URL.")
+    return validate_regex(field_name, url_regex, required, "is not a valid URL.")
 
 def validate_date_before(field_name, before_date: pnd.datetime, required: bool = False):
     """
