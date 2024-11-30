@@ -1,19 +1,24 @@
 """
 Controller for operations with users.
 """
-import json
-from fastapi import Response, status
-from fastapi_controllers import Controller, get
+from fastapi_controllers import Controller, get, post
+from backend.app.dtos.user_register_request import UserRegisterRequest
+from backend.app.dtos.user_register_response import UserRegisterResponse
 
 class UserController(Controller):
     """Controller for operations with users."""
     tags=["Users"]
 
-    @get("/user/{user_id}", response_class=Response)
-    async def get_user_object(self, user_id: int) -> Response:
+    @get("/user/{user_id}")
+    async def get_user_object(self, user_id: int) -> UserRegisterRequest:
         """Get user object."""
-        return Response(
-            content=json.dumps({"user_id": user_id}),
-            status_code=status.HTTP_200_OK,
-            media_type="application/json"
+        return UserRegisterRequest(
+            username=str(user_id),
+            email="email@email.com",
+            password="password"
         )
+
+    @post("/user", response_model=UserRegisterResponse)
+    def register_user(self, data: UserRegisterRequest) -> UserRegisterResponse:
+        """Register user."""
+        return UserRegisterResponse(test="cake")

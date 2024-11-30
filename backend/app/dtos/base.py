@@ -2,11 +2,10 @@
 Base class for a data transfer object
 """
 import json
-from dataclasses import dataclass
+from pydantic import BaseModel
 from backend.app.utils.sanitization.standard import sanitize_all
 
-@dataclass
-class BaseDto():
+class BaseDto(BaseModel):
     """
     Base class for a data transfer object. Automatically applies validation
     """
@@ -28,9 +27,6 @@ class BaseDto():
         """Converts a dictionary to Dto object"""
         return cls(**dict_obj)
 
-    def __str__(self):
-        return self.to_json()
-
     @sanitize_all()
     def sanitize(self):
         """
@@ -46,13 +42,9 @@ class BaseDto():
         """
         return self
 
-    def validate(self):
+    def revalidate(self):
         """
         Performs sanitization and validation.
         Returns the result object.
         """
         return self.sanitize().clean()
-
-    def __post_init__(self):
-        """Run validation after initialization"""
-        self.validate()

@@ -3,6 +3,7 @@ This module serves as the entry point for the backend application.
 """
 import logging
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from backend.app import config, controllers
 from backend.app.utils.logging.filters.fastapi_healthcheck import FastAPIHealthCheckFilter
 
@@ -22,6 +23,19 @@ def main():
         ]
     )
     logging.getLogger("uvicorn.access").addFilter(FastAPIHealthCheckFilter())
+
+    origins = [
+        "http://localhost",
+        "http://0.0.0.0"
+    ]
+
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=origins,
+        allow_credentials=True,
+        allow_methods=["*"],
+        allow_headers=["*"],
+    )
 
     controllers.add_controllers(app)
 
