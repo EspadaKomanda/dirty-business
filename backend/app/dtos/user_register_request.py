@@ -7,7 +7,7 @@ from backend.app.utils.validation.standard import v_email
 from backend.app.utils.validation.username import v_username
 from backend.app.utils.validation.password import v_password
 
-class UserRegisterRequest(BaseModel):
+class UserRegisterRequest(BaseModel, str_strip_whitespace=True):
     """
     Data transfer object for user registration request.
     """
