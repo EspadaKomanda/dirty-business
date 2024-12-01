@@ -21,4 +21,4 @@ class UserController(Controller):
     @post("/user", response_model=UserRegisterResponse)
     def register_user(self, data: UserRegisterRequest) -> UserRegisterResponse:
         """Register user."""
-        return UserRegisterResponse(test="cake")
+        return UserRegisterResponse(test=str(data))

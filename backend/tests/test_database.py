@@ -13,7 +13,6 @@ from backend.app.models.user_profile import UserProfile
 from backend.app.models.user_role import UserRole
 from backend.app.models.user_termination import UserTermination
 from backend.app.models.user import User
-from backend.app.exceptions.generic.validation_exception import ValidationException
 
 config.ENVIRONMENT_TYPE = "development"
 config.POSTGRES_DB = "automatic_unittest_database"
@@ -71,7 +70,7 @@ class TestDatabase(unittest.TestCase):
             name="name",
             surname="surname",
             patronymic="patronymic",
-            avatar_url="avatar_url"
+            avatar_url="http://example.com/images/avatar.png"
         ).save()
 
         UserRole.create(
@@ -100,20 +99,20 @@ class TestDatabase(unittest.TestCase):
             registration_date=pnd.now()
         ).save()
 
-        # Test @validate_name
+        # Test name validation
         try:
             UserProfile.create(
                 user=user,
                 name="name",
                 surname="surname",
                 patronymic="pat"*100,
-                avatar_url="avatar_url"
+                avatar_url="example.com/images/avatar.png"
             ).save()
             assert False
-        except ValidationException:
+        except ValueError:
             pass
 
-        # Test @validate_email
+        # Test email validation
         try:
             UserLoginData.create(
                 user=user,
@@ -128,7 +127,7 @@ class TestDatabase(unittest.TestCase):
                 recovery_gen_time=pnd.now()
             ).save()
             assert False
-        except ValidationException:
+        except ValueError:
             pass
 
         logger.debug("Deleting tables recursively...")

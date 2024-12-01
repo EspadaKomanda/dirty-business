@@ -1,9 +1,9 @@
 """
 Data transfer object for user registration response.
 """
-from .base import BaseDto
+from pydantic import BaseModel
 
-class UserRegisterResponse(BaseDto):
+class UserRegisterResponse(BaseModel):
     """
     Data transfer object for user registration response.
     """

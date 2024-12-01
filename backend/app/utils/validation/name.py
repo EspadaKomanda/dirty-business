@@ -1,17 +1,12 @@
 """
-Validation for name.
+Validates that a string is a valid name.
 """
-from .standard import validate_regex
+import re
 
-def validate_name(field_name, required: bool = False):
+def v_name(value: str):
     """
-    Validates name.
+    Validates that a string is a valid name.
     """
     name_regex = r'.{1,100}$'
 
-    return validate_regex(
-        field_name,
-        name_regex,
-        required,
-        "name cannot be longer than 100 characters."
-    )
+    return re.match(name_regex, value)
