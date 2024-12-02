@@ -6,10 +6,12 @@ from backend.app.utils.validation.standard import (
     validate_field,
     v_email,
     v_guid,
-    v_length,
-    v_digits
 )
-from backend.app.utils.validation.username import v_username
+from backend.app.utils.validation.special import (
+    v_username,
+    v_registration_code
+)
+
 from .base import Base
 from .user import User
 
@@ -44,8 +46,7 @@ class UserLoginData(Base):
         validate_field(self, "username", v_username)
         validate_field(self, "email", v_email)
         validate_field(self, "auth_token_salt", v_guid)
-        validate_field(self, "confirmation_code", v_digits)
-        validate_field(self, "confirmation_code", v_length, precise_length=6)
+        validate_field(self, "confirmation_code", v_registration_code)
         validate_field(self, "recovery_token", v_guid)
 
         return self

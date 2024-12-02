@@ -11,4 +11,5 @@ class UserRole(Base):
     Object representing the junction table for user and role.
     """
     user = pw.ForeignKeyField(User, backref="user_roles", on_delete="CASCADE")
+
     role = pw.ForeignKeyField(Role, backref="user_roles", on_delete="CASCADE")

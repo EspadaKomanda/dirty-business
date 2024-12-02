@@ -1,10 +1,11 @@
 fastapi[standard]
 fastapi-controllers
+passlib[bcrypt]
 peewee
 pendulum
 psycopg2-binary
 pydantic
+pyjwt
 python-dotenv
-python-logging-loki
 redis[hiredis]
 uvicorn

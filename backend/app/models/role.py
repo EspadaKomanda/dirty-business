@@ -9,10 +9,7 @@ class Role(Base):
     """
     Object representing a role.
     """
-    name = pw.CharField(
-        max_length=18,
-        unique=True
-    )
+    name = pw.CharField(max_length=18, unique=True)
 
     def validate(self):
         """

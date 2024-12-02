@@ -1,5 +1,5 @@
 """
-Data transfer object for user registration response.
+Responses related to the user service.
 """
 from pydantic import BaseModel
 

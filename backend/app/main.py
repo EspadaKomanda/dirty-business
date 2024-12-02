@@ -8,7 +8,9 @@ from backend.app import config, controllers
 from backend.app.utils.logging.filters.fastapi_healthcheck import FastAPIHealthCheckFilter
 
 app = FastAPI()
+app.title = "Espada - Backend API"
 app.summary = "Backend API for Nickelhack"
+app.contact = {"name": "Github", "url": "https://github.com/EspadaKomanda/dirty-business"}
 
 def main():
     """
@@ -24,14 +26,12 @@ def main():
     )
     logging.getLogger("uvicorn.access").addFilter(FastAPIHealthCheckFilter())
 
-    origins = [
-        "http://localhost",
-        "http://0.0.0.0"
-    ]
-
     app.add_middleware(
         CORSMiddleware,
-        allow_origins=origins,
+        allow_origins=[
+            "http://localhost",
+            "http://0.0.0.0"
+        ],
         allow_credentials=True,
         allow_methods=["*"],
         allow_headers=["*"],

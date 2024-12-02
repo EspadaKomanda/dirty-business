@@ -1,9 +1,11 @@
 """
 Controller for operations with users.
 """
+from typing import Annotated
+from fastapi import Depends
 from fastapi_controllers import Controller, get, post
-from backend.app.dtos.user_register_request import UserRegisterRequest
-from backend.app.dtos.user_register_response import UserRegisterResponse
+from backend.app.dtos.user_service.requests import UserRegisterRequest
+from backend.app.dtos.user_service.responses import UserRegisterResponse
 
 class UserController(Controller):
     """Controller for operations with users."""
@@ -11,7 +13,9 @@ class UserController(Controller):
 
     @get("/user/{user_id}")
     async def get_user_object(self, user_id: int) -> UserRegisterRequest:
-        """Get user object."""
+        """
+        Retrieve user object.
+        """
         return UserRegisterRequest(
             username=str(user_id),
             email="email@email.com",
@@ -22,3 +26,8 @@ class UserController(Controller):
     def register_user(self, data: UserRegisterRequest) -> UserRegisterResponse:
         """Register user."""
         return UserRegisterResponse(test=str(data))
+
+    @get("/greetMe/{user_id}")
+    async def greet_me(self, user_id: int) -> str:
+        """Greet user."""
+        return f"Hello, {user_id}"

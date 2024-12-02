@@ -2,7 +2,7 @@
 Object representing the user profile.
 """
 import peewee as pw
-from backend.app.utils.validation.name import v_name
+from backend.app.utils.validation.special import v_name
 from backend.app.utils.validation.standard import validate_field, v_url
 from .base import Base
 from .user import User
