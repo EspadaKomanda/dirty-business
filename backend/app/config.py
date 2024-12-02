@@ -46,11 +46,13 @@ JWT_ACCESS_EXPIRE_MINUTES=getenv("JWT_ACCESS_EXPIRE_MINUTES")
 JWT_REFRESH_EXPIRE_MINUTES=getenv("JWT_REFRESH_EXPIRE_MINUTES")
 JWT_ISSUER=getenv("JWT_ISSUER")
 JWT_AUDIENCE=getenv("JWT_AUDIENCE")
+JWT_ALGORITHM=getenv("JWT_ALGORITHM") or "HS256"
 
 if (JWT_KEY is None or
     JWT_ACCESS_EXPIRE_MINUTES is None or
     JWT_REFRESH_EXPIRE_MINUTES is None or
     JWT_ISSUER is None or
-    JWT_AUDIENCE is None
+    JWT_AUDIENCE is None or
+    JWT_ALGORITHM is None
     ):
     raise ConfigurationException("Not all JWT parameters have been configured.")

@@ -1,8 +1,8 @@
 """
 Validation annotations for Pydantic models
 """
-from pydantic_core import core_schema
 from typing import Any
+from pydantic_core import core_schema
 from .special import (
     v_name,
     v_password,

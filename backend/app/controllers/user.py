@@ -1,8 +1,6 @@
 """
 Controller for operations with users.
 """
-from typing import Annotated
-from fastapi import Depends
 from fastapi_controllers import Controller, get, post
 from backend.app.dtos.user_service.requests import UserRegisterRequest
 from backend.app.dtos.user_service.responses import UserRegisterResponse
