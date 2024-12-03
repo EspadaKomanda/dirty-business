@@ -5,7 +5,7 @@ import logging
 import jwt
 import pendulum as pnd
 import pydantic as pyd
-from peewee import DataError
+import peewee as pw
 from fastapi import HTTPException, status
 from backend.app.config import (
     JWT_KEY,
@@ -24,9 +24,9 @@ from backend.app.dtos.auth_service.responses import RefreshTokenResponse
 
 logger = logging.getLogger(__name__)
 
-class JwtService:
+class AuthService:
     """
-    Service for generating, decoding and validating JWT tokens.
+    Service for authenticating users.
     """
     @classmethod
     def _generate_token(cls, user_id: str, token_type: str) -> str:
@@ -35,21 +35,22 @@ class JwtService:
         role: Role
         try:
             user = User.get_by_id(user_id)
-        except DataError:
-            logger.error("Attempt to generate token for non-existent user")
+        except pw.DataError:
+            logger.error("Attempted to generate token for non-existent user")
             raise
 
         try:
             user_login_data = UserLoginData.get(user=user)
-        except DataError:
+        except pw.DataError:
             logger.error("Login data for user %s not found", user_id)
             raise
 
         try:
             role = Role.get_by_id(UserRole.get(user=user).role)
 
-        except DataError:
+        except pw.DataError:
             logger.error("Role for user %s not found", user_id)
+            raise
 
         encoded_jwt: str
         try:
@@ -89,14 +90,17 @@ class JwtService:
         )
 
         try:
+            # Decode token and parse data as TokenData object
             data = TokenData(**jwt.decode(token, JWT_KEY, algorithms=[JWT_ALGORITHM]))
 
             user = User.get_by_id(data.user_id)
             user_login_data = UserLoginData.get(user=user)
 
+            # Validate salt
             if user_login_data.auth_token_salt != data.salt:
                 raise credentials_exception
 
+            # Validate token type
             if data.token_type != token_type:
                 raise credentials_exception
 
@@ -109,7 +113,7 @@ class JwtService:
         except jwt.InvalidTokenError as e:
             logger.warning("Token is invalid: %s", e)
             raise credentials_exception from e
-        except DataError as e:
+        except pw.DataError as e:
             logger.error("Could not find user: %s", e)
             raise credentials_exception from e
         except Exception as e:
@@ -119,14 +123,14 @@ class JwtService:
     @classmethod
     def generate_access_token(cls, user_id: str) -> str:
         """
-        Generate access token.
+        Generate access token for user.
         """
         return cls._generate_token(user_id, "access")
 
     @classmethod
     def generate_refresh_token(cls, user_id: str) -> str:
         """
-        Generate refresh token.
+        Generate refresh token for user.
         """
         return cls._generate_token(user_id, "refresh")
 
@@ -135,12 +139,13 @@ class JwtService:
         """
         Validate token.
         """
+        # TODO: think on the return type
         return cls._validate_token(access_token, "access")
 
     @classmethod
     def refresh_tokens(cls, refresh_token: str) -> RefreshTokenResponse:
         """
-        Validate token.
+        Generates and returns access & refresh token if refresh token is still valid.
         """
         user = cls._validate_token(refresh_token, "refresh")
         if user is None:

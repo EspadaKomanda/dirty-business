@@ -10,7 +10,7 @@ from backend.app.utils.validation.pydantic_integration import (
     RegistrationCode
 )
 
-class UserRegisterRequest(BaseModel, str_strip_whitespace=True):
+class BeginRegistrationRequest(BaseModel, str_strip_whitespace=True):
     """
     Data transfer object for user registration request.
 
@@ -24,6 +24,15 @@ class UserRegisterRequest(BaseModel, str_strip_whitespace=True):
     email: EmailStr
     username: Username
     password: Password
+
+class CheckRegistrationCodeRequest(BaseModel, str_strip_whitespace=True):
+    """
+    Data transfer object for user registration confirmation request.
+
+    Confirmation code must be 6 digits and not expired.
+    """
+    email: EmailStr
+    confirmation_code: RegistrationCode
 
 class CompleteRegistrationRequest(BaseModel, str_strip_whitespace=True):
     """

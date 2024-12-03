@@ -5,14 +5,13 @@ import peewee as pw
 from backend.app.utils.validation.special import v_name
 from backend.app.utils.validation.standard import validate_field, v_url
 from .base import Base
-from .user import User
 
 class UserProfile(Base):
     """
     Object representing the user profile.
     """
     user = pw.ForeignKeyField(
-        User,
+        "User",
         null=False,
         backref="user_profile",
         on_delete="CASCADE"

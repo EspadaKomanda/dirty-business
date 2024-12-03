@@ -13,13 +13,12 @@ from backend.app.utils.validation.special import (
 )
 
 from .base import Base
-from .user import User
 
 class UserLoginData(Base):
     """
     Object representing all the data necessary for user registration and authentication.
     """
-    user = pw.ForeignKeyField(User, backref="user_login_data", on_delete="CASCADE")
+    user = pw.ForeignKeyField("User", backref="user_login_data", on_delete="CASCADE")
 
     username = pw.CharField(unique=True, max_length=18)
 
