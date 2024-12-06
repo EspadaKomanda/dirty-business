@@ -35,6 +35,9 @@ def create_database():
         safe=True
     )
 
+    Role.get_or_create(name="user")
+    Role.get_or_create(name="admin")
+
 def wipe_database(database_name: str):
     """
     Removes the contents of the database being used. the database_name parameter is

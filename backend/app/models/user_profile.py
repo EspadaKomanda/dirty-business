@@ -10,11 +10,11 @@ class UserProfile(Base):
     """
     Object representing the user profile.
     """
-    user = pw.ForeignKeyField(
+    user = pw.DeferredForeignKey(
         "User",
         null=False,
         backref="user_profile",
-        on_delete="CASCADE"
+        on_delete="CASCADE",
     )
 
     name = pw.CharField(max_length=100)

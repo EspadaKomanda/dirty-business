@@ -1,7 +1,7 @@
 """
 Data transfer objects for auth service.
 """
-import pendulum as pnd
+from datetime import datetime
 from pydantic import BaseModel
 
 class TokenData(BaseModel):
@@ -11,11 +11,11 @@ class TokenData(BaseModel):
     token_type: the type of token (access or refresh)\n
     salt: user's session salt\n
     """
-    user_id: str
+    user_id: int | str
     username: str
     role: str
     token_type: str
     salt: str
-    exp: pnd.DateTime
+    exp: datetime | str
     iss: str
     aud: str

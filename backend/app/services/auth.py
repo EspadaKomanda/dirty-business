@@ -56,9 +56,9 @@ class AuthService:
         try:
             exipre = pnd.now()
             if token_type == "access":
-                exipre += pnd.duration(minutes=JWT_ACCESS_EXPIRE_MINUTES)
+                exipre += pnd.duration(minutes=int(JWT_ACCESS_EXPIRE_MINUTES))
             elif token_type == "refresh":
-                exipre += pnd.duration(minutes=JWT_REFRESH_EXPIRE_MINUTES)
+                exipre += pnd.duration(minutes=int(JWT_REFRESH_EXPIRE_MINUTES))
 
             data = TokenData(
                 user_id=user.id,
@@ -69,7 +69,7 @@ class AuthService:
                 exp=exipre,
                 iss=JWT_ISSUER,
                 aud=JWT_AUDIENCE
-            )
+            ).dict()
 
             encoded_jwt = jwt.encode(data, JWT_KEY, algorithm=JWT_ALGORITHM)
 

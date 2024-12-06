@@ -17,14 +17,16 @@ class User(Base):
         """
         Get user by username.
         """
-        return cls.get(UserLoginData.username == username)
+        user_login_data = UserLoginData.get(UserLoginData.username == username)
+        return cls.get_by_id(user_login_data.user.id)
 
     @classmethod
     def get_by_email(cls, email: str):
         """
         Get user by email.
         """
-        return cls.get(UserLoginData.email == email)
+        user_login_data = UserLoginData.get(UserLoginData.email == email)
+        return cls.get_by_id(user_login_data.user.id)
 
     @property
     def login_data(self):

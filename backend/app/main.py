@@ -4,8 +4,12 @@ This module serves as the entry point for the backend application.
 import logging
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+import uvicorn
 from backend.app import config, controllers
 from backend.app.utils.logging.filters.fastapi_healthcheck import FastAPIHealthCheckFilter
+from backend.app import models
+
+models.create_database()
 
 app = FastAPI()
 app.title = "Espada - Backend API"
@@ -39,5 +43,7 @@ def main():
 
     controllers.add_controllers(app)
 
-if __name__ == "backend.app.main":
+    uvicorn.run(app, host="0.0.0.0", port=8000, log_config=None)
+
+if __name__ == "__main__":
     main()

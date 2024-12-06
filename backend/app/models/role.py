@@ -11,6 +11,13 @@ class Role(Base):
     """
     name = pw.CharField(max_length=18, unique=True)
 
+    @classmethod
+    def get_by_name(cls, name: str):
+        """
+        Get role by name.
+        """
+        return cls.get(cls.name == name)
+
     def validate(self):
         """
         Function to run validation on.

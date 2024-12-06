@@ -25,6 +25,7 @@ class Base(pw.Model):
     """
     Default database model
     """
+    id = pw.AutoField(primary_key=True)
     created_at = pw.DateTimeField(default=pnd.now())
     updated_at = pw.DateTimeField(default=pnd.now())
 
