@@ -1,5 +1,5 @@
 """
-Controller for operations with users.
+Controller for user actions.
 """
 from fastapi_controllers import Controller, post
 from backend.app.dtos.user_service.requests import (
