@@ -45,7 +45,7 @@ class TestDatabase(unittest.TestCase):
 
         logger.debug("Creation of tables...")
         role = Role.create(
-            name="user"
+            name="princess"
         ).save()
 
         user = User.create(
