@@ -10,9 +10,10 @@ class RefreshTokenResponse(BaseModel):
     access_token: str
     refresh_token: str
 
-class ValidateAuthTokenResponse(BaseModel):
+class ValidateAccessTokenResponse(BaseModel):
     """
     Data transfer object for login request.
+    An error is returned if token is invalid.
     """
     is_valid: bool
 

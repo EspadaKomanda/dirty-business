@@ -17,7 +17,7 @@ class RefreshTokenRequest(BaseModel, str_strip_whitespace=True):
     """
     refresh_token: str
 
-class ValidateAuthTokenRequest(BaseModel, str_strip_whitespace=True):
+class ValidateAccessTokenRequest(BaseModel, str_strip_whitespace=True):
     """
     Data transfer object for validate auth token request.
     """

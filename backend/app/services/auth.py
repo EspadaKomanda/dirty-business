@@ -20,7 +20,10 @@ from backend.app.models.user_login_data import UserLoginData
 from backend.app.models.user_role import UserRole
 from backend.app.models.role import Role
 from backend.app.dtos.auth_service.dtos import TokenData
-from backend.app.dtos.auth_service.responses import RefreshTokenResponse
+from backend.app.dtos.auth_service.responses import (
+    RefreshTokenResponse,
+    ValidateAccessTokenResponse
+)
 
 logger = logging.getLogger(__name__)
 
@@ -91,7 +94,13 @@ class AuthService:
 
         try:
             # Decode token and parse data as TokenData object
-            data = TokenData(**jwt.decode(token, JWT_KEY, algorithms=[JWT_ALGORITHM]))
+            data = TokenData(**jwt.decode(
+                token,
+                key=JWT_KEY,
+                algorithms=[JWT_ALGORITHM],
+                audience=JWT_AUDIENCE,
+                issuer=JWT_ISSUER
+                ))
 
             user = User.get_by_id(data.user_id)
             user_login_data = UserLoginData.get(user=user)
@@ -135,12 +144,16 @@ class AuthService:
         return cls._generate_token(user_id, "refresh")
 
     @classmethod
-    def validate_access_token(cls, access_token: str) -> User:
+    def validate_access_token(cls, access_token: str) -> ValidateAccessTokenResponse:
         """
         Validate token.
         """
-        # TODO: think on the return type
-        return cls._validate_token(access_token, "access")
+        user = cls._validate_token(access_token, "access")
+
+        return ValidateAccessTokenResponse(
+            is_valid=user is not None
+        )
+
 
     @classmethod
     def refresh_tokens(cls, refresh_token: str) -> RefreshTokenResponse:
