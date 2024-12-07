@@ -10,6 +10,7 @@ from .user_profile import UserProfile
 from .user_role import UserRole
 from .user_termination import UserTermination
 from .user import User
+from .camera import Camera
 
 logger = logging.getLogger(__name__)
 
@@ -19,7 +20,8 @@ tables = [
         UserProfile,
         UserRole,
         UserTermination,
-        User
+        User,
+        Camera
     ]
 
 logger.debug("Connecting to databse...")
