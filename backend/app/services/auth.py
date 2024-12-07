@@ -1,6 +1,7 @@
 """
 Service for authenticating users.
 """
+import json
 import logging
 import jwt
 import pendulum as pnd
@@ -32,6 +33,7 @@ from backend.app.dtos.auth_service.responses import (
     LoginResponse
 )
 from backend.app.utils.security.hashing import verify_password
+from backend.app.services.redis import RedisService as redis
 
 logger = logging.getLogger(__name__)
 
@@ -93,8 +95,7 @@ class AuthService:
         return encoded_jwt
 
     @classmethod
-    def _validate_token(cls, token: str, token_type: str) -> User:
-        # TODO: implement caching
+    def _validate_token(cls, token: str, token_type: str) -> UserAccount:
 
         credentials_exception = HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
@@ -112,18 +113,34 @@ class AuthService:
                 issuer=JWT_ISSUER
                 ))
 
-            user = User.get_by_id(data.user_id)
-            user_login_data = UserLoginData.get(user=user)
+            account: UserAccount
+
+            # Add user to Redis if it is not there yet
+            if not redis.exists(f"user:{data.user_id}"):
+                user = User.get_by_id(data.user_id)
+
+                account = UserAccount(
+                    id=user.id,
+                    username=user.login_data.username,
+                    role=user.role,
+                    salt=user.login_data.auth_token_salt
+                )
+                redis.set(f"user:{data.user_id}", account.json())
+
+            # Get user from Redis
+            redis_user = json.loads(redis.get(f"user:{data.user_id}"))
+            print(redis_user)
+            account = UserAccount(**redis_user)
 
             # Validate salt
-            if user_login_data.auth_token_salt != data.salt:
+            if account.salt != data.salt:
                 raise credentials_exception
 
             # Validate token type
             if data.token_type != token_type:
                 raise credentials_exception
 
-            return user
+            return account
 
         # TODO: review exception handling on FastAPI side
         except pyd.ValidationError as e:

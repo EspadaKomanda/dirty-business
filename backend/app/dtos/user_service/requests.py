@@ -1,7 +1,7 @@
 """
 Requests related to the user service.
 """
-from pydantic import BaseModel, EmailStr, FileUrl
+from pydantic import BaseModel, EmailStr
 
 from backend.app.utils.validation.pydantic_integration import (
     Name,
@@ -47,4 +47,3 @@ class CompleteRegistrationRequest(BaseModel, str_strip_whitespace=True):
     name: Name
     surname: Name
     patronymic: Name | None = None
-    avatar_url: FileUrl | None = None

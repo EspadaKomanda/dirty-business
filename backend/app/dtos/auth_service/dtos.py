@@ -24,6 +24,7 @@ class UserAccount(BaseModel):
     """
     Data transfer object for user account.
     """
-    user_id: int
+    id: int
     username: str
     role: str
+    salt: str | None
