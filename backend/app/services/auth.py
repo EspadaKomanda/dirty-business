@@ -6,7 +6,8 @@ import jwt
 import pendulum as pnd
 import pydantic as pyd
 import peewee as pw
-from fastapi import HTTPException, status
+from fastapi import HTTPException, status, Depends
+from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from backend.app.config import (
     JWT_KEY,
     JWT_ACCESS_EXPIRE_MINUTES,
@@ -19,7 +20,7 @@ from backend.app.models.user import User
 from backend.app.models.user_login_data import UserLoginData
 from backend.app.models.user_role import UserRole
 from backend.app.models.role import Role
-from backend.app.dtos.auth_service.dtos import TokenData
+from backend.app.dtos.auth_service.dtos import TokenData, UserAccount
 from backend.app.dtos.auth_service.requests import (
     ValidateAccessTokenRequest,
     RefreshTokenRequest,
@@ -33,6 +34,8 @@ from backend.app.dtos.auth_service.responses import (
 from backend.app.utils.security.hashing import verify_password
 
 logger = logging.getLogger(__name__)
+
+http_bearer_scheme = HTTPBearer()
 
 class AuthService:
     """
@@ -212,4 +215,23 @@ class AuthService:
         return LoginResponse(
             access_token=cls.generate_access_token(user.id),
             refresh_token=cls.generate_refresh_token(user.id)
+        )
+
+    @classmethod
+    def authenticate(cls, credentials: HTTPAuthorizationCredentials = Depends(http_bearer_scheme)):
+        """
+        Used in controller methods that require authentication.
+        """
+        user = cls._validate_token(credentials.credentials, "access")
+
+        if user is None:
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Could not validate credentials"
+            )
+
+        return UserAccount(
+            user_id=user.id,
+            username=user.login_data.username,
+            role=user.role
         )

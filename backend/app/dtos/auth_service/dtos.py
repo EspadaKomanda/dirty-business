@@ -19,3 +19,11 @@ class TokenData(BaseModel):
     exp: datetime | str
     iss: str
     aud: str
+
+class UserAccount(BaseModel):
+    """
+    Data transfer object for user account.
+    """
+    user_id: int
+    username: str
+    role: str

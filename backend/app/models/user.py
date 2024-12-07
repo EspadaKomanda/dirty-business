@@ -5,6 +5,8 @@ import peewee as pw
 from .base import Base
 from .user_login_data import UserLoginData
 from .user_profile import UserProfile
+from .user_role import UserRole
+from .role import Role
 
 class User(Base):
     """
@@ -41,3 +43,10 @@ class User(Base):
         Property that returns the user profile.
         """
         return UserProfile.get(user=self)
+
+    @property
+    def role(self):
+        """
+        Property that returns the user role.
+        """
+        return Role.get_by_id(UserRole.get(user=self).role).name
