@@ -17,6 +17,9 @@ Sessionx.vim
 tags
 [._]*.un~
 
+# Minio
+minio/*
+
 # VSCode
 .vscode
 !.vscode/launch.json

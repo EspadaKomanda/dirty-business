@@ -5,6 +5,7 @@ import logging
 from fastapi import FastAPI
 from .user import UserController
 from .auth import AuthController
+from .camera import CameraController
 
 def add_controllers(app: FastAPI):
     """Add all controllers to the app."""
@@ -14,8 +15,9 @@ def add_controllers(app: FastAPI):
         """
         Used by Docker for healthcheck capabilities.
         """
-        return {"status": "healthy"}
+        return "healthy"
 
     logging.info("Adding controllers...")
     app.include_router(UserController.create_router())
     app.include_router(AuthController.create_router())
+    app.include_router(CameraController.create_router())

@@ -1,5 +1,5 @@
 """
-Requests related to the auth service.
+Responses related to the auth service.
 """
 from pydantic import BaseModel
 

@@ -16,6 +16,18 @@ load_dotenv(override=False)
 # Environment
 ENVIRONMENT_TYPE=getenv("ENVIRONMENT_TYPE") or "development"
 
+# Minio
+MINIO_HOSTNAME=getenv("MINIO_HOSTNAME") or "minio"
+MINIO_PORT=getenv("MINIO_PORT") or "9000"
+MINIO_ROOT_USER=getenv("MINIO_ROOT_USER") or "minio"
+MINIO_ROOT_PASSWORD=getenv("MINIO_ROOT_PASSWORD") or "minio"
+
+if (MINIO_HOSTNAME is None or
+    MINIO_PORT is None or
+    MINIO_ROOT_USER is None or
+    MINIO_ROOT_PASSWORD is None):
+    raise ConfigurationException("Not all minio parameters have been configured.")
+
 # PosgreSQL
 POSTGRES_HOSTNAME=getenv("POSTGRES_HOSTNAME")
 POSTGRES_PORT=getenv("POSTGRES_PORT")
