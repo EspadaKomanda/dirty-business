@@ -14,14 +14,15 @@ class Camera(Base):
 
     description = pw.CharField(null=True, max_length=500)
 
+    contamination = pw.FloatField()
+
     date = pw.DateTimeField()
 
-    url = pw.CharField(null=True, max_length=100)
+    url = pw.CharField(null=True, max_length=500)
 
     def validate(self):
         """
         Function to run validation on.
         """
-        validate_field(self, "name", v_url)
         validate_field(self, "url", v_url)
         return self

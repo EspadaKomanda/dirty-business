@@ -37,8 +37,121 @@ def create_database():
         safe=True
     )
 
-    Role.get_or_create(name="user")
-    Role.get_or_create(name="admin")
+    Role(name="user")
+    Role(name="admin")
+
+    if Camera.select().count() != 0:  # pylint: disable=no-value-for-parameter
+        return
+
+    Camera(
+        id=1,
+        name="Dummy 1",
+        description="Located in room 12",
+        contamination=0.5,
+        date="2024-01-01",
+        url="https://t4.ftcdn.net/jpg/03/10/07/45/360_F_310074598_rBt50O0nwjydPjWStjdzyNdm0Oh1nAyV.jpg"
+    ).save()
+
+    Camera(
+        id=2,
+        name="Dummy 2",
+        description="Located in room 15",
+        contamination=0.3,
+        date="2024-01-01",
+        url="https://t4.ftcdn.net/jpg/05/00/56/83/360_F_500568328_HdltBEmUOLBcRfIQTzjSslOsfuH06OCh.jpg"
+    ).save()
+
+    Camera(
+        id=3,
+        name="Dummy 3",
+        description="Located in room 17",
+        contamination=0.13,
+        date="2022-01-01",
+        url="https://media.istockphoto.com/id/1141324902/photo/real-lens-flare-shot-in-studio-over-black-background-easy-to-add-as-overlay-or-screen-filter.jpg?s=612x612&w=0&k=20&c=zWGnDHkDJZKqaUdNIGkf_eSNJ17qRrnl7czqJxWZlLw="
+    ).save()
+
+    Camera(
+        id=4,
+        name="Dummy 4",
+        description="Located in room 19",
+        contamination=0.1,
+        date="2022-01-01",
+        url="https://t4.ftcdn.net/jpg/05/00/56/83/360_F_500568328_HdltBEmUOLBcRfIQTzjSslOsfuH06OCh.jpg"
+    ).save()
+
+    Camera(
+        id=5,
+        name="Dummy 5",
+        description="Located in room 21",
+        contamination=0.05,
+        date="2022-01-01",
+        url="https://t4.ftcdn.net/jpg/05/00/56/83/360_F_500568328_HdltBEmUOLBcRfIQTzjSslOsfuH06OCh.jpg"
+    ).save()
+
+    Camera(
+        id=6,
+        name="Dummy 6",
+        description="Located in room 23",
+        contamination=0.01,
+        date="2022-01-01",
+        url="https://t4.ftcdn.net/jpg/05/00/56/83/360_F_500568328_HdltBEmUOLBcRfIQTzjSslOsfuH06OCh.jpg"
+    ).save()
+
+    Camera(
+        id=7,
+        name="Dummy 7",
+        description="Located in room 25",
+        contamination=0,
+        date="2022-01-01",
+        url="https://t4.ftcdn.net/jpg/05/00/56/83/360_F_500568328_HdltBEmUOLBcRfIQTzjSslOsfuH06OCh.jpg"
+    ).save()
+
+    Camera(
+        id=8,
+        name="Dummy 8",
+        description="Located in room 27",
+        contamination=0,
+        date="2022-01-01",
+        url="https://t4.ftcdn.net/jpg/05/00/56/83/360_F_500568328_HdltBEmUOLBcRfIQTzjSslOsfuH06OCh.jpg"
+    ).save()
+
+    Camera(
+        id=9,
+        name="Dummy 9",
+        description="Located in room 29",
+        contamination=0,
+        date="2022-01-01",
+        url="https://t4.ftcdn.net/jpg/05/00/56/83/360_F_500568328_HdltBEmUOLBcRfIQTzjSslOsfuH06OCh.jpg"
+    ).save()
+
+    Camera(
+        id=10,
+        name="Dummy 10",
+        description="Located in room 31",
+        contamination=0,
+        date="2022-01-01",
+        url="https://t4.ftcdn.net/jpg/05/00/56/83/360_F_500568328_HdltBEmUOLBcRfIQTzjSslOsfuH06OCh.jpg"
+    ).save()
+
+    Camera(
+        id=11,
+        name="Dummy 11",
+        description="Located in room 33",
+        contamination=0,
+        date="2022-01-01",
+        url="https://t4.ftcdn.net/jpg/05/00/56/83/360_F_500568328_HdltBEmUOLBcRfIQTzjSslOsfuH06OCh.jpg"
+    ).save()
+
+    Camera(
+        id=12,
+        name="Dummy 12",
+        description="Located in room 35",
+        contamination=0,
+        date="2022-01-01",
+        url="https://t4.ftcdn.net/jpg/05/00/56/83/360_F_500568328_HdltBEmUOLBcRfIQTzjSslOsfuH06OCh.jpg"
+    ).save()
+
+    logger.debug("All tables have been initialized successfully.")
 
 def wipe_database(database_name: str):
     """

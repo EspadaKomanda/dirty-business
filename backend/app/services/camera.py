@@ -19,7 +19,14 @@ class CameraService:
         camera = Camera.get_or_none(Camera.id == camera_id)
         if camera is None:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
-        return CameraDto(**camera)
+        return CameraDto(
+            id=camera.id,
+            name=camera.name,
+            description=camera.description,
+            contamination=camera.contamination,
+            date=camera.date,
+            url=camera.url
+        )
 
     @classmethod
     def get_cameras(cls, page=1) -> CamerasResponse:
@@ -36,6 +43,15 @@ class CameraService:
 
         return CamerasResponse(
             page=page,
-            cameras=[CameraDto(**camera) for camera in cameras],
+            cameras=[
+                CameraDto(
+                    id=camera.id,
+                    name=camera.name,
+                    description=camera.description,
+                    contamination=camera.contamination,
+                    date=camera.date,
+                    url=camera.url
+                )
+                for camera in cameras],
             total_pages=camera_count // 10
         )
