@@ -6,6 +6,7 @@ from fastapi import FastAPI
 from .user import UserController
 from .auth import AuthController
 from .camera import CameraController
+from .storage import StorageController
 
 def add_controllers(app: FastAPI):
     """Add all controllers to the app."""
@@ -21,3 +22,4 @@ def add_controllers(app: FastAPI):
     app.include_router(UserController.create_router())
     app.include_router(AuthController.create_router())
     app.include_router(CameraController.create_router())
+    app.include_router(StorageController.create_router())

@@ -2,6 +2,7 @@
 S3 service for managing files.
 """
 import logging
+from fastapi import HTTPException, status
 from minio import Minio
 from minio.error import S3Error
 
@@ -38,7 +39,10 @@ class S3Service:
             client.fput_object(bucket_name, destination, source)
             logger.info("File %s uploaded to bucket %s", source, bucket_name)
         except S3Error as e:
-            raise RuntimeError(e) from e
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail=str(e)
+            ) from e
 
     @classmethod
     def download(cls, bucket_name: str, source: str, destination: str):
@@ -48,5 +52,9 @@ class S3Service:
         try:
             client.fget_object(bucket_name, source, destination)
             logger.info("File %s downloaded from bucket %s", source, bucket_name)
+            return True
         except S3Error as e:
-            raise RuntimeError(e) from e
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail=str(e)
+            ) from e
