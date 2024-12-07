@@ -20,10 +20,17 @@ from backend.app.models.user_login_data import UserLoginData
 from backend.app.models.user_role import UserRole
 from backend.app.models.role import Role
 from backend.app.dtos.auth_service.dtos import TokenData
+from backend.app.dtos.auth_service.requests import (
+    ValidateAccessTokenRequest,
+    RefreshTokenRequest,
+    LoginRequest
+)
 from backend.app.dtos.auth_service.responses import (
     RefreshTokenResponse,
-    ValidateAccessTokenResponse
+    ValidateAccessTokenResponse,
+    LoginResponse
 )
+from backend.app.utils.security.hashing import verify_password
 
 logger = logging.getLogger(__name__)
 
@@ -144,29 +151,65 @@ class AuthService:
         return cls._generate_token(user_id, "refresh")
 
     @classmethod
-    def validate_access_token(cls, access_token: str) -> ValidateAccessTokenResponse:
+    def validate_access_token(
+        cls, request: ValidateAccessTokenRequest) -> ValidateAccessTokenResponse:
         """
         Validate token.
         """
-        user = cls._validate_token(access_token, "access")
+        user = cls._validate_token(request.access_token, "access")
 
         return ValidateAccessTokenResponse(
             is_valid=user is not None
         )
 
-
     @classmethod
-    def refresh_tokens(cls, refresh_token: str) -> RefreshTokenResponse:
+    def refresh_tokens(cls, request: RefreshTokenRequest) -> RefreshTokenResponse:
         """
         Generates and returns access & refresh token if refresh token is still valid.
         """
-        user = cls._validate_token(refresh_token, "refresh")
+        user = cls._validate_token(request.refresh_token, "refresh")
         if user is None:
             raise RuntimeError("Could not validate token")
 
-        access_token = cls._generate_token(user, "access")
-        refresh_token = cls._generate_token(user, "refresh")
+        access_token = cls.generate_access_token(user)
+        refresh_token = cls.generate_refresh_token(user)
         return RefreshTokenResponse(
             access_token=access_token,
             refresh_token=refresh_token
+        )
+
+    @classmethod
+    def login(cls, request=LoginRequest) -> LoginResponse:
+        """
+        Validate user credentials and return access token.
+        """
+        user: User
+        user_login_data: UserLoginData
+        try:
+            user = User.get_by_username(request.username)
+            user_login_data = UserLoginData.get(user=user)
+        except Exception as e:
+            logger.warning(
+                "Attempt to login in to user %s that was not found: %s"
+                , request.username, e
+            )
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Invalid credentials"
+            ) from e
+
+        if (not user_login_data.is_email_confirmed or
+            not verify_password(request.password, user_login_data.password_hash)):
+            logger.warning(
+                "Attempt to login in to user %s with invalid credentials",
+                user.login_data.username
+            )
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Invalid credentials"
+            )
+
+        return LoginResponse(
+            access_token=cls.generate_access_token(user.id),
+            refresh_token=cls.generate_refresh_token(user.id)
         )

@@ -53,6 +53,7 @@ class Base(pw.Model):
         return self
 
     def save(self, *args, **kwargs):
+        """Save the object to the database"""
         self.validate()
 
         # Update the updated_at field before saving
