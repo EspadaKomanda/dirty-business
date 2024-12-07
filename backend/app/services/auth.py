@@ -247,8 +247,4 @@ class AuthService:
                 detail="Could not validate credentials"
             )
 
-        return UserAccount(
-            user_id=user.id,
-            username=user.login_data.username,
-            role=user.role
-        )
+        return user

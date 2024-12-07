@@ -45,4 +45,4 @@ class UserController(Controller):
     def get_user_profile(self,
         user: Annotated[UserAccount, Depends(AuthService.authenticate)]) -> UserProfile:
         """Get user profile."""
-        return UserService.get_user_profile(user.user_id)
+        return UserService.get_user_profile(user.id)
