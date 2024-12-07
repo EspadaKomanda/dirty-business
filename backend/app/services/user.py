@@ -174,8 +174,7 @@ class UserService:
             user=user,
             name=request.name,
             surname=request.surname,
-            patronymic=request.patronymic,
-            avatar_url=request.avatar_url
+            patronymic=request.patronymic
         ).save()
 
         logger.debug("Issuing tokens for user %s...", user.id)
