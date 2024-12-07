@@ -1,6 +1,7 @@
 """
 Controller for authentication.
 """
+
 from fastapi_controllers import Controller, post
 from backend.app.services.auth import AuthService
 from backend.app.dtos.auth_service.requests import (
@@ -19,7 +20,7 @@ class AuthController(Controller):
     tags=["Auth"]
 
     @post("/login", response_model=LoginResponse)
-    def login(self, data: LoginRequest) -> LoginResponse:
+    def login(self, data: LoginRequest, ) -> LoginResponse:
         """
         Allows user to login.
         """

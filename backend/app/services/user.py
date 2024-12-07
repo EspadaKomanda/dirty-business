@@ -15,7 +15,6 @@ from backend.app.utils.security.hashing import (
 from backend.app.models.user_login_data import UserLoginData
 from backend.app.models.user_profile import UserProfile
 from backend.app.models.user_role import UserRole
-# from backend.app.models.user_termination import UserTermination
 from backend.app.models.user import User
 from backend.app.models.role import Role
 
@@ -29,6 +28,7 @@ from backend.app.dtos.user_service.responses import (
     CheckRegistrationCodeResponse,
     CompleteRegistrationResponse
 )
+from backend.app.dtos.user_service.dtos import UserProfile as UserProfileDto
 
 from backend.app.services.auth import AuthService
 
@@ -184,4 +184,17 @@ class UserService:
         return CompleteRegistrationResponse(
             access_token=AuthService.generate_access_token(user.id),
             refresh_token=AuthService.generate_refresh_token(user.id)
+        )
+
+    @classmethod
+    def get_user_profile(cls, user_id) -> UserProfileDto:
+        """
+        Get user profile.
+        """
+        profile = User.get_by_id(user_id).profile
+        return UserProfileDto(
+            name=profile.name,
+            surname=profile.surname,
+            patronymic=profile.patronymic,
+            avatar_url=profile.avatar_url
         )
